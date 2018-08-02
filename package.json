@@ -1,0 +1,34 @@
+{
+  "name": "note-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kingsley-einstein/note-practice-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kingsley-einstein/note-practice-api/issues"
+  },
+  "homepage": "https://github.com/kingsley-einstein/note-practice-api#readme",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "connect-mongo": "^2.0.1",
+    "crypto": "^1.0.1",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "formidable": "^1.2.1",
+    "fs": "0.0.1-security",
+    "mongoose": "^5.2.6",
+    "morgan": "^1.9.0",
+    "nodemailer": "^4.6.7",
+    "path": "^0.12.7"
+  }
+}
