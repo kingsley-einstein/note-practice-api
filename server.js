@@ -12,6 +12,9 @@ let mongooseOptions = {
 
 app.set('port', process.env.PORT || 5000);
 
+require('./settings').config(app);
+require('./settings').route(app);
+
 app.listen(app.get('port'), () => {
     console.log('Express server listening on port %d', app.get('port'));
     mongoose.connect('mongodb://localhost:27017/notetestdb', mongooseOptions, (err) => {

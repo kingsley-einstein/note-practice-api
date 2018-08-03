@@ -8,9 +8,12 @@ module.exports = {
             res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH');
             next();
         });
+
+        //...................................................................//
+        console.log('App configured');
     },
 
     route: (app) => {
-
+        require('./routes').wire(app);
     }
 }

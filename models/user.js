@@ -1,4 +1,6 @@
 const Schema = require('mongoose').Schema;
+//const Goal = require('./goal');
+let crypto = require('crypto');
 
 const User = new Schema({
     firstname: {
@@ -29,9 +31,9 @@ const User = new Schema({
         unique: true
     },
     userId: Schema.Types.ObjectId,
-    goals: [Object],
+    goals: [JSON],
     //pitches: [Object],
-    permittedUsers: [Object],
+    permittedUsers: [JSON],
     hashedPasscode: String,
     isOfAge: {
         type: Object,
@@ -44,16 +46,17 @@ const User = new Schema({
 });
 
 User.methods.createPassword = (password) => {
-    this.hashedPasscode = require('crypto').pbkdf2Sync(password, new Buffer('sh!', 'utf8'), 1000, 64, 'sha512').toString('hex');
+    this.hashedPasscode = crypto.pbkdf2Sync(password, new Buffer('sh!', 'utf8'), 1000, 64, 'sha512').toString('hex');
 };
 
 User.methods.checkPassword = (password) => {
-    var hash = require('crypto').pbkdf2Sync(password, new Buffer('sh!', 'utf8'), 1000, 64, 'sha512').toString('hex');
+    var hash = crypto.pbkdf2Sync(password, new Buffer('sh!', 'utf8'), 1000, 64, 'sha512').toString('hex');
 
     return hash === this.hashedPasscode;
 };
 
 User.methods.setGoal = (goal) => {
+    //this.goals = [Object];
     this.goals.push(goal);
 };
 

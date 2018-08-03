@@ -7,10 +7,13 @@ const GoalSchema = new Schema({
         maxlength: 80
     },
     userId: String,
-    pitches: [Object],
+    pitches: [JSON],
     targetProgress: Number,
     currentProgress: Number,
-    isCompleted: Boolean, 
+    isCompleted: {
+        type: Boolean,
+        default: false
+    }, 
     dateSet: Date,
     dateCompleted: Date 
 });
