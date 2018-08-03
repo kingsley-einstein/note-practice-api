@@ -41,7 +41,8 @@ const User = new Schema({
             isVerified: true
         }
     },
-    requestedUsers: [Object]
+    requestedUsers: [JSON],
+    gravatar: String
     
 });
 
@@ -55,12 +56,4 @@ User.methods.checkPassword = (password) => {
     return hash === this.hashedPasscode;
 };
 
-User.methods.setGoal = (goal) => {
-    //this.goals = [Object];
-    this.goals.push(goal);
-};
-
-User.methods.deleteGoal = (goal) => {
-    this.goals.splice(this.goals.indexOf(goal), 1);
-};
 module.exports = require('mongoose').model('User', User);

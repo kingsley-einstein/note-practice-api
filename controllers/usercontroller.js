@@ -30,7 +30,8 @@ module.exports = {
                                 username: req.body.username,
                                 isOfAge : {
                                     isVerified: require('moment')().diff(req.body.dob, 'years') > 13
-                                }
+                                },
+                                gravatar: require('md5')(req.body.email)
                             });
                             incomingdata.createPassword(req.body.password);
                             incomingdata.validate((err) => {
