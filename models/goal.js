@@ -20,7 +20,7 @@ const GoalSchema = new Schema({
 
 GoalSchema.methods.setCurrentProgress = (progress) => {
     this.currentProgress = progress;
-    this.isCompleted = (this.currentProgress === this.targetProgress);
+    this.isCompleted = (this.currentProgress >= this.targetProgress);
 };
 
 module.exports = require('mongoose').model('Goal', GoalSchema);
