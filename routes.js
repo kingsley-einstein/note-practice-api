@@ -5,6 +5,9 @@ module.exports.wire = (app) => {
     app.delete('/:id/:goalid/deletegoal', require('./controllers/usercontroller').deleteGoal);
     app.post('/:id/sendverify', require('./controllers/usercontroller').sendVerification);
     app.get('/:id/:date/verify', require('./controllers/usercontroller').verifyUser);
+    app.put('/:goalid/:id/setprogress', require('./controllers/goalcontroller').setProgress);
+    app.put('/:id/:goalid/setpitch', require('./controllers/goalcontroller').setPitch);
+    app.delete('/:id/deleteall', require('./controllers/goalcontroller').deleteEntireGoalRecord);
 
     //...........................................................................//
 

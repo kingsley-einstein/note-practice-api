@@ -171,5 +171,29 @@ module.exports = {
             });
         });
         
+    },
+    sendBuddyRequest: (req, res) => {
+
+    },
+    acceptBuddyRequest: (req, res) => {
+
+    },
+    rejectBuddyRequest: (req, res) => {
+
+    },
+    shareProgress: (req, res) => {
+
+    },
+    acceptProgressShare: (req, res) => {
+
+    },
+    rejectProgressShare: (req, res) => {
+
+    },
+    displayGlobalRecord: (req, res) => {
+
+    },
+    displayProfile: (req, res) => {
+
     }
 }

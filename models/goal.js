@@ -1,4 +1,5 @@
-const Schema = require('mongoose').Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const GoalSchema = new Schema({
     title: {
@@ -18,9 +19,9 @@ const GoalSchema = new Schema({
     dateCompleted: Date 
 });
 
-GoalSchema.methods.setCurrentProgress = (progress) => {
-    this.currentProgress = progress;
+GoalSchema.methods.setCurrentProgress = function(progress) {
+    this.currentProgress = Number.parseFloat(progress);
     this.isCompleted = (this.currentProgress >= this.targetProgress);
 };
 
-module.exports = require('mongoose').model('Goal', GoalSchema);
+module.exports = mongoose.model('Goal', GoalSchema);

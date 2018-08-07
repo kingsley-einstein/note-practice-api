@@ -1,4 +1,5 @@
-const Schema = require('mongoose').Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 //const Goal = require('./goal');
 let crypto = require('crypto');
 
@@ -56,4 +57,4 @@ User.methods.checkPassword = (password) => {
     return hash === this.hashedPasscode;
 };
 
-module.exports = require('mongoose').model('User', User);
+module.exports = mongoose.model('User', User);
