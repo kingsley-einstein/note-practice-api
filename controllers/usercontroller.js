@@ -94,6 +94,50 @@ module.exports = {
             });
         }
     },
+    sendVerification: (req, res) => {
+        User.findOne({_id: req.params.id}, (err, user) => {
+            if (req.body.email) {
+                if (req.body.email.match(/([a-zA-Z]+|[a-zA-Z0-9]+)(@)(\w+)(.com|.co.uk|.net)/)) {
+                    if (req.body.email === user.email) {
+                        res.status(500).send('That is your email, enter a distinct email');
+                    }
+                    else {
+                        transport.sendMail({
+                            from: '<The Note App Team> '+require('./../secrets').user,
+                            to: req.body.email,
+                            html: 'Hello from the Note App Team. <br/> <br/> A certain user with the name '+user.firstname+' '+user.lastname+' registered to use a music practice app and is underaged to access certain features and as such needs your consent to use the app. Click on the link below to give consent. <br/> <br/>'
+                        }, (err, info) => {
+                            if (err) {
+                                console.log(err);
+                            }
+                            else {
+                                console.log(info);
+                                res.status(200).json(info);
+                            }
+                        });
+                    }
+                }
+                else {
+                    res.status(500).send('Invalid email');
+                }
+            }
+            else {
+                res.status(500).send('Email field cannot be empty');
+            }
+        });
+    },
+    verifyUser: (req, res) => {
+        User.findOne({_id: req.params.id}, (err, user) => {
+            if (require('moment')().diff(req.params.date, 'days') > 7) {
+                res.status(500).send('Verification link has expired');
+            }
+            else {
+                user.isOfAge.isVerified = true;
+                user.save();
+                res.status(200).send('User has been verified');
+            }
+        });
+    },
     setGoal: (req, res) => {
         User.findOne({_id: req.params.id}, (err, user) => {
             let goal = new Goal({
