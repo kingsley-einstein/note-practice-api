@@ -8,6 +8,8 @@ module.exports.wire = (app) => {
     app.put('/:goalid/:id/setprogress', require('./controllers/goalcontroller').setProgress);
     app.put('/:id/:goalid/setpitch', require('./controllers/goalcontroller').setPitch);
     app.delete('/:id/deleteall', require('./controllers/goalcontroller').deleteEntireGoalRecord);
+    app.put('/:id/:goalid/:pitchid/speedup', require('./controllers/pitchcontroller').setSpeed);
+    app.get('/:id/pitches', require('./controllers/pitchcontroller').displayPitches);
 
     //...........................................................................//
 

@@ -47,11 +47,11 @@ const User = new Schema({
     
 });
 
-User.methods.createPassword = (password) => {
+User.methods.createPassword = function(password){
     this.hashedPasscode = crypto.pbkdf2Sync(password, new Buffer('sh!', 'utf8'), 1000, 64, 'sha512').toString('hex');
 };
 
-User.methods.checkPassword = (password) => {
+User.methods.checkPassword = function(password){
     var hash = crypto.pbkdf2Sync(password, new Buffer('sh!', 'utf8'), 1000, 64, 'sha512').toString('hex');
 
     return hash === this.hashedPasscode;
