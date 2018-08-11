@@ -35,6 +35,7 @@ const User = new Schema({
     goals: [JSON],
     //pitches: [Object],
     permittedUsers: [JSON],
+    salt: String,
     hashedPasscode: String,
     isOfAge: {
         type: Object,
@@ -43,18 +44,42 @@ const User = new Schema({
         }
     },
     requestedUsers: [JSON],
-    gravatar: String
+    gravatar: String,
+    message: String,
+    sharedProgresses: [JSON]
     
 });
 
 User.methods.createPassword = function(password){
-    this.hashedPasscode = crypto.pbkdf2Sync(password, new Buffer('sh!', 'utf8'), 1000, 64, 'sha512').toString('hex');
+    this.salt = crypto.randomBytes(16).toString('base64');
+    this.hashedPasscode = crypto.pbkdf2Sync(password, new Buffer(this.salt, 'utf8'), 1000, 64, 'sha512').toString('hex');
 };
 
 User.methods.checkPassword = function(password){
-    var hash = crypto.pbkdf2Sync(password, new Buffer('sh!', 'utf8'), 1000, 64, 'sha512').toString('hex');
+    var hash = crypto.pbkdf2Sync(password, new Buffer(this.salt, 'utf8'), 1000, 64, 'sha512').toString('hex');
 
     return hash === this.hashedPasscode;
+};
+
+User.methods.shareProgress = function(req, res, buddy, message){
+    if (this.goals.length > 0) {
+        for (var i = 0; i < this.goals.length; i++) {
+            if (buddy.sharedProgresses.indexOf(this.goals[i]) === -1) {
+                buddy.sharedProgresses.push(this.goals[i]);
+            }
+            else {
+                buddy.sharedProgresses.splice(buddy.sharedProgresses.indexOf(this.goals[i]), 1, this.goals[i]);
+            }
+        }
+        req.session.message = message;
+        buddy.message = req.session.message;
+        delete req.session.message;
+        buddy.save();
+        res.status.json(this.goals);
+    }
+    else {
+        res.status(500).send('There is no progress to share');
+    }
 };
 
 module.exports = mongoose.model('User', User);

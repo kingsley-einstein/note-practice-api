@@ -1,3 +1,6 @@
+const session = require('express-session');
+const Mongostore = require('connect-mongo')(session);
+
 module.exports = {
     config: (app) => {
         app.use(require('body-parser')({extended: true}))
@@ -8,6 +11,19 @@ module.exports = {
             res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
             next();
         });
+        app.use(session({
+            cookie: {
+                signed: true,
+                secure: false,
+                maxAge: 900000
+            },
+            resave: true,
+            saveUninitialized: true,
+            store: new Mongostore({
+                db: app.get('env') === 'development' ? 'notetestdb' : '',
+                mongooseConnection: require('mongoose').connection
+            })
+        }));
 
         //...................................................................//
         console.log('App configured');
@@ -15,5 +31,8 @@ module.exports = {
 
     route: (app) => {
         require('./routes').wire(app);
+
+        //...................................................................//
+        console.log('App routed');
     }
 }

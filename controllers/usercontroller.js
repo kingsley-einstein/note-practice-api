@@ -173,27 +173,54 @@ module.exports = {
         
     },
     sendBuddyRequest: (req, res) => {
-
+        User.findOne({_id: req.params.id}, (err, user) => {
+            User.findOne({_id: req.params.buddyid}, (err, buddy) => {
+                buddy.requestedUsers.push(user);
+                req.session.message = user.username+' has requested to add you as a buddy';
+                buddy.message = req.session.message;
+                buddy.save();
+                delete req.session.message;
+                res.status(200).json(user);
+            });
+        });
     },
     acceptBuddyRequest: (req, res) => {
-
+        User.findOne({_id: req.params.id}, (err, user) => {
+            User.findOne({_id: req.params.requestid}, (err, request) => {
+                user.requestedUsers.splice(user.requestedUsers.indexOf(request), 1);
+                user.permittedUsers.push(request);
+                user.message = '';
+                request.permittedUsers.push(user);
+                request.save();
+                user.save();
+                res.status(200).json(user);
+            });
+        });
     },
     rejectBuddyRequest: (req, res) => {
-
+        User.findOne({_id: req.params.id}, (err, user) => {
+            User.findOne({_id: req.params.requestid}, (err, request) => {
+                user.requestedUsers.splice(user.requestedUsers.indexOf(request), 1);
+                user.save();
+                res.status(200).json(user);
+            });
+        });
     },
     shareProgress: (req, res) => {
-
-    },
-    acceptProgressShare: (req, res) => {
-
-    },
-    rejectProgressShare: (req, res) => {
-
+        User.findOne({_id: req.params.id}, (err, user) => {
+            User.findOne({_id: req.params.buddyid}, (err, buddy) => {
+                user.shareProgress(req, res, buddy, user.username+' has shared their progress with you');
+            });
+        });
     },
     displayGlobalRecord: (req, res) => {
-
+        User.find({}, {}, {}, (err, users) => {
+            res.status(200).json(users);
+        });
     },
     displayProfile: (req, res) => {
-
+        User.findOne({_id: req.params.id}, (err, user) => {
+            res.status(200).json(user);
+        });
     }
 }

@@ -10,6 +10,9 @@ module.exports.wire = (app) => {
     app.delete('/:id/deleteall', require('./controllers/goalcontroller').deleteEntireGoalRecord);
     app.put('/:id/:goalid/:pitchid/speedup', require('./controllers/pitchcontroller').setSpeed);
     app.get('/:id/pitches', require('./controllers/pitchcontroller').displayPitches);
+    app.get('/:id/:buddyid', require('./controllers/usercontroller').shareProgress);
+    app.get('/global', require('./controllers/usercontroller').displayGlobalRecord);
+    app.get('/:id', require('./controllers/usercontroller').displayProfile);
 
     //...........................................................................//
 
