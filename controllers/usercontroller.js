@@ -29,7 +29,7 @@ module.exports = {
                                 email: req.body.email,
                                 username: req.body.username,
                                 isOfAge : {
-                                    isVerified: require('moment')().diff(req.body.dob, 'years') > 13
+                                    isVerified: require('moment')().diff(new Date(req.body.dob), 'years') > 13
                                 },
                                 gravatar: require('md5')(req.body.email)
                             });
@@ -47,7 +47,7 @@ module.exports = {
                                     }
                                     else {
                                         
-                                        res.status(304).send("You are underaged and are unallowed to access certain features of this app. Enter a parent's email to send them a verification link with which to provide consent.");
+                                        res.status(302).send("You are underaged and are unallowed to access certain features of this app. Enter a parent's email to send them a verification link with which to provide consent.");
                                     }
 
                                 }
@@ -105,7 +105,7 @@ module.exports = {
                         transport.sendMail({
                             from: '<The Note App Team> '+require('./../secrets').user,
                             to: req.body.email,
-                            html: 'Hello from the Note App Team. <br/> <br/> A certain user with the name '+user.firstname+' '+user.lastname+' registered to use a music practice app and is underaged to access certain features and as such needs your consent to use the app. Click on the link below to give consent. <br/> <br/>'
+                            html: `Hello from the Note App Team. <br/> <br/> A certain user with the name ${user.firstname} ${user.lastname} registered to use a music practice app and is underaged to access certain features and as such needs your consent to use the app. Click on the link below to give consent. <br/> <br/> <a href="http://localhost:5000/${user._id}/${Date.now()}/verify">Give Consent</a>`
                         }, (err, info) => {
                             if (err) {
                                 console.log(err);
@@ -128,7 +128,7 @@ module.exports = {
     },
     verifyUser: (req, res) => {
         User.findOne({_id: req.params.id}, (err, user) => {
-            if (require('moment')().diff(req.params.date, 'days') > 7) {
+            if (require('moment')().diff(new Date(req.params.date), 'days') > 7) {
                 res.status(500).send('Verification link has expired');
             }
             else {
@@ -175,7 +175,7 @@ module.exports = {
     sendBuddyRequest: (req, res) => {
         User.findOne({_id: req.params.id}, (err, user) => {
             User.findOne({_id: req.params.buddyid}, (err, buddy) => {
-                buddy.requestedUsers.push(user);
+                buddy.requestedUsers.push(user._id);
                 req.session.message = user.username+' has requested to add you as a buddy';
                 buddy.message = req.session.message;
                 buddy.save();
@@ -188,9 +188,9 @@ module.exports = {
         User.findOne({_id: req.params.id}, (err, user) => {
             User.findOne({_id: req.params.requestid}, (err, request) => {
                 user.requestedUsers.splice(user.requestedUsers.indexOf(request), 1);
-                user.permittedUsers.push(request);
+                user.permittedUsers.push(request._id);
                 user.message = '';
-                request.permittedUsers.push(user);
+                request.permittedUsers.push(user._id);
                 request.save();
                 user.save();
                 res.status(200).json(user);
@@ -201,6 +201,7 @@ module.exports = {
         User.findOne({_id: req.params.id}, (err, user) => {
             User.findOne({_id: req.params.requestid}, (err, request) => {
                 user.requestedUsers.splice(user.requestedUsers.indexOf(request), 1);
+                user.message = '';
                 user.save();
                 res.status(200).json(user);
             });

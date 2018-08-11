@@ -34,16 +34,13 @@ const User = new Schema({
     userId: Schema.Types.ObjectId,
     goals: [JSON],
     //pitches: [Object],
-    permittedUsers: [JSON],
+    permittedUsers: [String],
     salt: String,
     hashedPasscode: String,
     isOfAge: {
-        type: Object,
-        default: {
-            isVerified: true
-        }
+        isVerified: Boolean
     },
-    requestedUsers: [JSON],
+    requestedUsers: [String],
     gravatar: String,
     message: String,
     sharedProgresses: [JSON]

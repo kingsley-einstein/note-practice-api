@@ -10,11 +10,14 @@ module.exports.wire = (app) => {
     app.delete('/:id/deleteall', require('./controllers/goalcontroller').deleteEntireGoalRecord);
     app.put('/:id/:goalid/:pitchid/speedup', require('./controllers/pitchcontroller').setSpeed);
     app.get('/:id/pitches', require('./controllers/pitchcontroller').displayPitches);
-    app.get('/:id/:buddyid', require('./controllers/usercontroller').shareProgress);
+    app.get('/:id/:buddyid/share', require('./controllers/usercontroller').shareProgress);
     app.get('/global', require('./controllers/usercontroller').displayGlobalRecord);
     app.get('/:id', require('./controllers/usercontroller').displayProfile);
+    app.get('/:id/:buddyid/request', require('./controllers/usercontroller').sendBuddyRequest);
+    app.get('/:id/:requestid/accept', require('./controllers/usercontroller').acceptBuddyRequest);
+    app.get('/:id/:requestid/reject', require('./controllers/usercontroller').rejectBuddyRequest);
 
     //...........................................................................//
 
-    console.log('App routed');
+    //console.log('App routed');
 }

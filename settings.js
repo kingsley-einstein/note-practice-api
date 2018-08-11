@@ -15,10 +15,11 @@ module.exports = {
             cookie: {
                 signed: true,
                 secure: false,
-                maxAge: 900000
+                maxAge: 90000000,
             },
             resave: true,
             saveUninitialized: true,
+            secret: require('./secrets').secret,
             store: new Mongostore({
                 db: app.get('env') === 'development' ? 'notetestdb' : '',
                 mongooseConnection: require('mongoose').connection
