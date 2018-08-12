@@ -22,6 +22,9 @@ const GoalSchema = new Schema({
 GoalSchema.methods.setCurrentProgress = function(progress) {
     this.currentProgress = Number.parseFloat(progress);
     this.isCompleted = (this.currentProgress >= this.targetProgress);
+    if (this.isCompleted) {
+        this.dateCompleted = new Date(Date.now());
+    }
 };
 
 module.exports = mongoose.model('Goal', GoalSchema);
