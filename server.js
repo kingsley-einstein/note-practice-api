@@ -11,7 +11,7 @@ let mongooseOptions = {
 };
 
 app.set('port', process.env.PORT || 5000);
-app.set('env', 'development');
+app.set('env', 'production');
 
 require('./settings').config(app);
 require('./settings').route(app);

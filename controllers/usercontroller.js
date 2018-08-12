@@ -119,7 +119,7 @@ module.exports = {
                             transport.sendMail({
                                 from: '<The Note App Team> '+require('./../secrets').user,
                                 to: req.body.email,
-                                html: `Hello from the Note App Team. <br/> <br/> A certain user with the name ${user.firstname} ${user.lastname} registered to use a music practice app and is underaged to access certain features and as such needs your consent to use the app. Click on the link below to give consent. <br/> <br/> <a href="http://localhost:5000/${user._id}/${Date.now()}/verify">Give Consent</a>`
+                                html: `Hello from the Note App Team. <br/> <br/> A certain user with the name ${user.firstname} ${user.lastname} registered to use a music practice app and is underaged to access certain features and as such needs your consent to use the app. Click on the link below to give consent. <br/> <br/> <a href="http://musical-app.herokuapp.com/${user._id}/${Date.now()}/verify">Give Consent</a>`
                             }, (err, info) => {
                                 if (err) {
                                     console.log(err);
