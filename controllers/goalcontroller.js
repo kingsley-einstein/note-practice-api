@@ -5,45 +5,60 @@ const _ = require('underscore');
 
 module.exports = {
     setProgress: (req, res) => {
-        Goal.findOne({_id: req.params.goalid}, (err, goal) => {
-            goal.setCurrentProgress(req.body.currentprogress);
-            goal.save();
-            User.findOne({_id: req.params.id}, (err, user) => {
-                user.goals.splice(user.goals.indexOf(goal), 1, goal);
-                user.save();
-                res.status(200).json(user);
+        if (req.headers['token'] === require('./../secrets').token) {
+            Goal.findOne({_id: req.params.goalid}, (err, goal) => {
+                goal.setCurrentProgress(req.body.currentprogress);
+                goal.save();
+                User.findOne({_id: req.params.id}, (err, user) => {
+                    user.goals.splice(user.goals.indexOf(goal), 1, goal);
+                    user.save();
+                    res.status(200).json(user);
+                });
             });
-        });
+        }
+        else {
+            res.status(500).send('Access denied! Invalid token');
+        }
     },
     setPitch: (req, res) => {
-        User.findOne({_id: req.params.id}, (err, user) => {
-            Goal.findOne({_id: req.params.goalid}, (err, goal) => {
-                let newpitch = new Pitch({
-                    userid: user._id,
-                    goalid: goal._id,
-                    targetTime: Number.parseFloat(req.body.targettime)
+        if (req.headers['token'] === require('./../secrets').token) {
+            User.findOne({_id: req.params.id}, (err, user) => {
+                Goal.findOne({_id: req.params.goalid}, (err, goal) => {
+                    let newpitch = new Pitch({
+                        userid: user._id,
+                        goalid: goal._id,
+                        targetTime: Number.parseFloat(req.body.targettime)
+                    });
+                    newpitch.setSpeed(Number.parseFloat(req.body.speed));
+                    newpitch.save();
+                    goal.pitches.push(newpitch);
+                    goal.save();
+                    user.goals.splice(user.goals.indexOf(goal), 1, goal);
+                    user.save();
+                    res.status(200).json(user);
                 });
-                newpitch.setSpeed(Number.parseFloat(req.body.speed));
-                newpitch.save();
-                goal.pitches.push(newpitch);
-                goal.save();
-                user.goals.splice(user.goals.indexOf(goal), 1, goal);
-                user.save();
-                res.status(200).json(user);
             });
-        });
+        }
+        else {
+            res.status(500).send('Access denied! Invalid token');
+        }
     },
     deleteEntireGoalRecord: (req, res) => {
-        User.findOne({_id: req.params.id}, (err, user) => {
-            Goal.find({userId: user._id}, {}, (err, goals) => {
-                _.each(goals, (g, i) => {
-                    Goal.findByIdAndRemove(g._id, (err, item) => {
-                        user.goals.splice(user.goals.indexOf(item), 1);
-                        user.save();
+        if (req.headers['token'] === require('./../secrets').token) {
+            User.findOne({_id: req.params.id}, (err, user) => {
+                Goal.find({userId: user._id}, {}, (err, goals) => {
+                    _.each(goals, (g, i) => {
+                        Goal.findByIdAndRemove(g._id, (err, item) => {
+                            user.goals.splice(user.goals.indexOf(item), 1);
+                            user.save();
+                        });
                     });
                 });
+                res.status(200).json(user);
             });
-            res.status(200).json(user);
-        });
+        }
+        else {
+            res.status(500).send('Access denied! Invalid token');
+        }
     }
 }

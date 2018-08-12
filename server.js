@@ -11,18 +11,34 @@ let mongooseOptions = {
 };
 
 app.set('port', process.env.PORT || 5000);
+app.set('env', 'development');
 
 require('./settings').config(app);
 require('./settings').route(app);
 
 app.listen(app.get('port'), () => {
     console.log('Express server listening on port %d', app.get('port'));
-    mongoose.connect('mongodb://localhost:27017/notetestdb', mongooseOptions, (err) => {
-        if (err) {
-            throw err;
-        }
-        else {
-            console.log('Mongoose connected');
-        }
-    });
+    switch (app.get('env')) {
+        case 'development' : 
+                    mongoose.connect(require('./secrets').local, mongooseOptions, (err) => {
+                        if (err) {
+                            throw err;
+                        }
+                        else {
+                            console.log('Mongoose connected to local db');
+                        }
+                    });
+                    break;
+        case 'production' :
+                    mongoose.connect(require('./secrets').cloud, mongooseOptions, (err) => {
+                        if (err) {
+                            throw err;
+                        }
+                        else {
+                            console.log('Mongoose connected to cloud db');
+                        }
+                    });
+                    break;
+
+    }
 });
