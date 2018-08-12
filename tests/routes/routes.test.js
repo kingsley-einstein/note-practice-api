@@ -4,7 +4,7 @@ describe('Route Test', () => {
         use: sinon.spy(),
         get: sinon.spy(),
         put: sinon.spy(),
-        post: sinon.spy(),
+       // post: sinon.spy(),
         delete: sinon.spy()
     };
     require('./../../settings').config(app);
