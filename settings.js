@@ -21,7 +21,7 @@ module.exports = {
             saveUninitialized: true,
             secret: require('./secrets').secret,
             store: new Mongostore({
-                db: app.get('env') === 'development' ? 'notetestdb' : '',
+                db: app.get('env') === 'development' ? 'notetestdb' : 'noteclouddb',
                 mongooseConnection: require('mongoose').connection
             })
         }));
