@@ -164,7 +164,7 @@ module.exports = {
                     userId: user._id,
                     targetProgress: Number.parseFloat(req.body.targetprogress),
                     currentProgress: 0,
-                    dateSet: Date.now()
+                    dateSet: new Date(Date.now())
                 });
                 goal.validate((err) => {
                     if (err) {
