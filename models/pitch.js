@@ -4,11 +4,12 @@ const Pitch = new Schema({
     pitchid: String,
     userid: String,
     goalid: String,
-    speed: Number
+    speeds: [JSON]
 });
 
-Pitch.methods.setSpeed = function(theSpeed) {
-    this.speed = theSpeed;
+Pitch.methods.setSpeed = function(body) {
+    const {userdate, speed} = body;
+    this.speeds.push({date: userdate, userspeed: speed});
 };
 
 module.exports = require('mongoose').model('Pitche', Pitch);
