@@ -25,6 +25,7 @@ module.exports = {
             User.findOne({_id: req.params.id}, (err, user) => {
                 Goal.findOne({_id: req.params.goalid}, (err, goal) => {
                     let newpitch = new Pitch({
+                        pitchid: req.params.pitchid,
                         userid: user._id,
                         goalid: goal._id,
                         targetTime: Number.parseFloat(req.body.targettime)

@@ -9,6 +9,7 @@ const GoalSchema = new Schema({
     },
     userId: String,
     pitches: [JSON],
+    avgSpeed: [JSON],
     targetProgress: Number,
     currentProgress: Number,
     isCompleted: {
@@ -25,6 +26,10 @@ GoalSchema.methods.setCurrentProgress = function(progress) {
     if (this.isCompleted) {
         this.dateCompleted = new Date(Date.now());
     }
+};
+GoalSchema.methods.calculateAverage = function() {
+    let speeds = 0;
+
 };
 
 module.exports = mongoose.model('Goal', GoalSchema);

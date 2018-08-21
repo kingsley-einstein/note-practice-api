@@ -8,7 +8,7 @@ module.exports = {
         if (req.headers['token'] === require('./../secrets').token) {
             User.findOne({_id: req.params.id}, (err, user) => {
                 Goal.findOne({_id: req.params.goalid}, (err, goal) => {
-                    Pitch.findOne({_id: req.params.pitchid}, (err, pitch) => {
+                    Pitch.findOne({pitchid: req.params.pitchid}, (err, pitch) => {
                         pitch.setSpeed(Number.parseFloat(req.body.speed));
                         pitch.save();
                         goal.pitches.splice(goal.pitches.indexOf(pitch), 1, pitch);

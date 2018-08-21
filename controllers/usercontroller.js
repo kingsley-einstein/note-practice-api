@@ -1,5 +1,6 @@
 const User = require('./../models/user');
 const Goal = require('./../models/goal');
+const Pitch = require('./../models/pitch');
 
 let transport = require('nodemailer').createTransport({
     service: 'gmail',
@@ -82,7 +83,7 @@ module.exports = {
                         }
                     }
                     else {
-                        res.status(500).send('User with specified email not found');
+                        res.status(404).send('User with specified email not found');
                     }
                 });
             }
@@ -98,7 +99,7 @@ module.exports = {
                         }
                     }
                     else {
-                        res.status(500).send('User with specified username not found');
+                        res.status(404).send('User with specified username not found');
                     }
                 });
             }
@@ -166,11 +167,21 @@ module.exports = {
                     currentProgress: 0,
                     dateSet: new Date(Date.now())
                 });
+                
                 goal.validate((err) => {
                     if (err) {
                         res.status(500).send('An error occured while trying to set goal');
                     }
                     else {
+                        for (var i = 0; i < req.body.pitches.length; i++) {
+                            let pitch = new Pitch({
+                               pitchid: req.body.pitches[i],
+                               goalid: goal._id,
+                               userid: user._id 
+                            });
+                            pitch.save();
+                            goal.pitches.push(pitch);
+                        }
                         goal.save();
                         //user.setGoal('Hello');
                         //user.goals.push(goal);
