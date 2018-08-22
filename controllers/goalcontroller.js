@@ -20,30 +20,6 @@ module.exports = {
             res.status(500).send('Access denied! Invalid token');
         }
     },
-    setPitch: (req, res) => {
-        if (req.headers['token'] === require('./../secrets').token) {
-            User.findOne({_id: req.params.id}, (err, user) => {
-                Goal.findOne({_id: req.params.goalid}, (err, goal) => {
-                    let newpitch = new Pitch({
-                        pitchid: req.params.pitchid,
-                        userid: user._id,
-                        goalid: goal._id,
-                        targetTime: Number.parseFloat(req.body.targettime)
-                    });
-                    newpitch.setSpeed(Number.parseFloat(req.body.speed));
-                    newpitch.save();
-                    goal.pitches.push(newpitch);
-                    goal.save();
-                    user.goals.splice(user.goals.indexOf(goal), 1, goal);
-                    user.save();
-                    res.status(200).json(user);
-                });
-            });
-        }
-        else {
-            res.status(500).send('Access denied! Invalid token');
-        }
-    },
     deleteEntireGoalRecord: (req, res) => {
         if (req.headers['token'] === require('./../secrets').token) {
             User.findOne({_id: req.params.id}, (err, user) => {

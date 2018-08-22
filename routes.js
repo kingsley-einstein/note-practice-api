@@ -6,9 +6,8 @@ module.exports.wire = (app) => {
     app.post('/:id/sendverify', require('./controllers/usercontroller').sendVerification);
     app.get('/:id/:date/verify', require('./controllers/usercontroller').verifyUser);
     app.put('/:goalid/:id/setprogress', require('./controllers/goalcontroller').setProgress);
-    app.put('/:id/:goalid/setpitch', require('./controllers/goalcontroller').setPitch);
     app.delete('/:id/deleteall', require('./controllers/goalcontroller').deleteEntireGoalRecord);
-    app.put('/:id/:goalid/:pitchid/speedup', require('./controllers/pitchcontroller').setSpeed);
+    app.put('/:id/:goalid/speedup', require('./controllers/pitchcontroller').setSpeed);
     app.get('/:id/pitches', require('./controllers/pitchcontroller').displayPitches);
     app.get('/:id/:buddyid/share', require('./controllers/usercontroller').shareProgress);
     app.get('/global', require('./controllers/usercontroller').displayGlobalRecord);

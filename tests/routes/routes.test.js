@@ -59,11 +59,8 @@ describe('Route Test', () => {
         it('should call /:goalid/:id/setprogress', () => {
             expect(app.put).to.be.calledWith('/:goalid/:id/setprogress', require('./../../controllers/goalcontroller').setProgress);
         });
-        it('should call /:id/:goalid/setpitch', () => {
-            expect(app.put).to.be.calledWith('/:id/:goalid/setpitch', require('./../../controllers/goalcontroller').setPitch);
-        });
-        it('should call /:id/:goalid/:pitchid/speedup', () => {
-            expect(app.put).to.be.calledWith('/:id/:goalid/:pitchid/speedup', require('./../../controllers/pitchcontroller').setSpeed);
+        it('should call /:id/:goalid/speedup', () => {
+            expect(app.put).to.be.calledWith('/:id/:goalid/speedup', require('./../../controllers/pitchcontroller').setSpeed);
         });
     });
     describe('Delete Calls', () => {
