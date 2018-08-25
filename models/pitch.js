@@ -9,9 +9,21 @@ const Pitch = new Schema({
     averageSpeed: [JSON]
 });
 
-Pitch.methods.setSpeed = function(body, i) {
+Pitch.methods.setSpeed = function(body, i, goal, user) {
     const {userdate, pitches} = body;
-    this.speeds.push({date: userdate, userspeed: pitches[i].speed});
+    this.speeds.push({date: new Date(userdate), speed: pitches[i].speed});
+    if (goal.pitches.indexOf(this) > -1) {
+        goal.pitches.splice(goal.pitches.indexOf(this), 1, this);
+    }
+    else {
+        goal.pitches.push(this);
+    }
+    user.goals.splice(user.goals.indexOf(goal), 1, goal);
+    //goal.save();
+    //user.save();
+    console.log(pitches[i]);
+    console.log(i);
+    console.log(this);
 };
 
 Pitch.methods.calculateAverage = function(body) {
@@ -19,11 +31,13 @@ Pitch.methods.calculateAverage = function(body) {
 
     if (this.speeds.length > 0) {
         _.each(this.speeds, (item) => {
-            sum += item.userspeed;
+            sum += item.speed;
         });
         
     }
-    this.averageSpeed.push({avr: (sum/this.speeds.length), date: body.date});
+    if (sum > 0) {
+        this.averageSpeed.push({avr: (sum/this.speeds.length), date: new Date(body.date)});
+    }
 };
 
 module.exports = require('mongoose').model('Pitche', Pitch);

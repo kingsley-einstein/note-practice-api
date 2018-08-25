@@ -15,6 +15,7 @@ module.exports.wire = (app) => {
     app.get('/:id/:buddyid/request', require('./controllers/usercontroller').sendBuddyRequest);
     app.get('/:id/:requestid/accept', require('./controllers/usercontroller').acceptBuddyRequest);
     app.get('/:id/:requestid/reject', require('./controllers/usercontroller').rejectBuddyRequest);
+    app.put('/average', require('./controllers/pitchcontroller').calculateAverage);
 
     //...........................................................................//
 

@@ -62,6 +62,9 @@ describe('Route Test', () => {
         it('should call /:id/:goalid/speedup', () => {
             expect(app.put).to.be.calledWith('/:id/:goalid/speedup', require('./../../controllers/pitchcontroller').setSpeed);
         });
+        it('should call /average', () => {
+            expect(app.put).to.be.calledWith('/average', require('./../../controllers/pitchcontroller').calculateAverage);
+        });
     });
     describe('Delete Calls', () => {
         it('should call /:id/:goalid/deletegoal', () => {
