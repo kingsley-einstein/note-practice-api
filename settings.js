@@ -3,7 +3,8 @@ const Mongostore = require('connect-mongo')(session);
 
 module.exports = {
     config: (app) => {
-        app.use(require('body-parser')({extended: true}))
+        app.use(require('body-parser')({extended: true}));
+        app.use(require('body-parser').json());
         app.use(require('morgan')('dev'));
         app.use((req, res, next) => {
             res.header('Access-Control-Allow-Origin', '*');
