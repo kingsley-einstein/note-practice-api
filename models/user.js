@@ -72,7 +72,7 @@ User.methods.shareProgress = function(req, res, buddy, message){
         buddy.message = req.session.message;
         delete req.session.message;
         buddy.save();
-        res.status.json(this.goals);
+        res.status(200).json(this.goals);
     }
     else {
         res.status(500).send('There is no progress to share');
