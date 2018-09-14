@@ -37,5 +37,19 @@ module.exports = {
         else {
             res.status(500).send('Access denied! Invalid token');
         }
+    },
+    displayGoals: (req, res) => {
+        if (req.headers['token'] === require('./../secrets').token) {
+            User.findOne({_id: req.params.id}, (err, user) => {
+                Goal.find({userId: user._id}, {}, (err, goals) => {
+                    if (goals.length > 0) {
+                        res.status(200).json(goals);
+                    }
+                    else {
+                        res.json({placeholder: "No Goal Items"});
+                    }
+                });
+            });
+        }
     }
 }
