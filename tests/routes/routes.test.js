@@ -54,6 +54,9 @@ describe('Route Test', () => {
         it('should call /:id/:requestid/reject', () => {
             expect(app.get).to.be.calledWith('/:id/:requestid/reject', require('./../../controllers/usercontroller').rejectBuddyRequest);
         });
+        it('should call /:id/goals', () => {
+            expect(app.get).to.be.calledWith('/:id/goals', require('./../../controllers/goalcontroller').displayGoals);
+        });
     });
     describe('Put Calls', () => {
         it('should call /:goalid/:id/setprogress', () => {

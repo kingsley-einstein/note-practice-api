@@ -12,6 +12,7 @@ module.exports.wire = (app) => {
     app.get('/:id/:buddyid/share', require('./controllers/usercontroller').shareProgress);
     app.get('/global', require('./controllers/usercontroller').displayGlobalRecord);
     app.get('/:id', require('./controllers/usercontroller').displayProfile);
+    app.get('/:id/goals', require('./controllers/goalcontroller').displayGoals);
     app.get('/:id/:buddyid/request', require('./controllers/usercontroller').sendBuddyRequest);
     app.get('/:id/:requestid/accept', require('./controllers/usercontroller').acceptBuddyRequest);
     app.get('/:id/:requestid/reject', require('./controllers/usercontroller').rejectBuddyRequest);
