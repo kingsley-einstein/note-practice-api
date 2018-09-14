@@ -199,11 +199,11 @@ module.exports = {
     deleteGoal: (req, res) => {
         if (req.headers['token'] === require('./../secrets').token) {
             User.findOne({_id: req.params.id}, (err, user) => {
-                Goal.findByIdAndRemove(req.params.goalid, (err, goal) => {
+                Goal.findOneAndRemove({_id: req.params.goalid}, (err, goal) => {
                     user.goals.splice(user.goals.indexOf(goal), 1);
                     user.save();
                     res.status(200).json(user);
-                });
+                })
             });
         }
         else {
