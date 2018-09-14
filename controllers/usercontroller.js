@@ -200,7 +200,9 @@ module.exports = {
         if (req.headers['token'] === require('./../secrets').token) {
             User.findOne({_id: req.params.id}, (err, user) => {
                 Goal.findOneAndRemove({_id: req.params.goalid}, (err, goal) => {
-                    user.goals.splice(user.goals.indexOf(goal), 1);
+                    user.goals.filter((item, index) => {
+                        return !(item._id === goal._id);
+                    });
                     user.save();
                     res.status(200).json(user);
                 })
