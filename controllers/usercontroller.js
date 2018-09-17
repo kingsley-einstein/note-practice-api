@@ -294,5 +294,40 @@ module.exports = {
         else {
             res.status(500).send('Access denied! Invalid token');
         }
+    },
+    resetPassword: (req, res) => {
+        User.findOne({email: req.body.email}, {}, {}, (err, user) => {
+            if (!user) {
+                res.status(404).send('User not found');
+            }
+            else {
+                transport.sendMail({
+                    from: '<The Note App Team> '+require('./../secrets').user,
+                    to: user.email,
+                    html: `Click on the link below to reset your password <br/> <a href="musical-app.herokuapp.com/${user.id}/reset">Reset Password</a>`
+                }, (err, info) => {
+                    if (err) {
+                        res.status(500).send(err);
+                    }
+                    else {
+                        res.status(200).json(info);
+                    }
+                });
+            }
+        });
+    },
+    showFpwView: (req, res) => {
+        User.findOne({_id: req.params.id}, (err, user) => {
+            res.render('fpw', {id: user._id});
+        });
+    },
+    updatePw: (req, res) => {
+        User.findOne({_id: req.params.id}, (err, user) => {
+            if (user) {
+                user.createPassword(req.body.password);
+                user.save();
+                res.render('confirmation', {message: 'Password successfully updated'});
+            }
+        });
     }
 }

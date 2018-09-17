@@ -1,8 +1,15 @@
 const session = require('express-session');
 const Mongostore = require('connect-mongo')(session);
+const hbs = require('express-handlebars');
 
 module.exports = {
     config: (app) => {
+        app.engine('hbs', hbs({
+            layoutsDir: require('path').join(app.get('views'), 'layouts'),
+            defaultLayout: 'main',
+            extname: '.hbs'
+        }));
+        app.set('view engine', 'hbs');
         app.use(require('body-parser')({extended: true}));
         app.use(require('body-parser').json());
         app.use(require('morgan')('dev'));

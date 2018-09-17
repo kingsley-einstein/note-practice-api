@@ -16,6 +16,9 @@ module.exports.wire = (app) => {
     app.get('/:id/:buddyid/request', require('./controllers/usercontroller').sendBuddyRequest);
     app.get('/:id/:requestid/accept', require('./controllers/usercontroller').acceptBuddyRequest);
     app.get('/:id/:requestid/reject', require('./controllers/usercontroller').rejectBuddyRequest);
+    app.get('/:id/reset', require('./controllers/usercontroller').showFpwView);
+    app.post('/:id/setpass', require('./controllers/usercontroller').updatePw);
+    app.post('/updatepw', require('./controllers/usercontroller').resetPassword);
     app.put('/average', require('./controllers/pitchcontroller').calculateAverage);
 
     //...........................................................................//
