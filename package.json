@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha -r tests/helper.js -R spec tests/**/**.test.js",
-    "start": "nodemon server"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
